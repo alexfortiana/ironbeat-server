@@ -1,18 +1,21 @@
 const router = require("express").Router();
 const LicenseModel = require("../models/License.model")
+const SongModel = require("../models/Song.model")
 
-router.post("/buy/:id", async(req, res, next) => {          // CREAMOS LA LICENCIA DE COMPRA * PREGUNTAR A JORGE EL PURCHASEDPRICE* 
+router.post("/buy/:id", async(req, res, next) => {          
 
-    const { purchasedPrice, owner, song } = req.body
     const ownerId = req.payload._id
     const songId = req.params.id
 
     try{
-
+   
+        const song = await SongModel.findById(songId)
+        
         const response = await LicenseModel.create({
-            purchasedPrice, 
+            purchasedPrice: song.price, 
             owner: ownerId,
-            song: songId
+            song: songId,
+            urlSong: song.audioUrl 
         })
 
     }catch(err){
@@ -20,7 +23,7 @@ router.post("/buy/:id", async(req, res, next) => {          // CREAMOS LA LICENC
     }
 })
 
-router.get("/buy", async(req, res, next) => {           // RENDERIZAMOS TODAS NUESTAS LICENCIAS DE CANCIONES 
+router.get("/", async(req, res, next) => {           // RENDERIZAMOS TODAS NUESTAS LICENCIAS DE CANCIONES 
 
     try{
         const response = await LicenseModel.find({

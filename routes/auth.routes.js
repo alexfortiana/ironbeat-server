@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs/dist/bcrypt");
 const UserModel = require("../models/User.model");
 const jwt = require("jsonwebtoken");
+const isAuthenticated = require("../middleware/isAuthenticated");
 
 
 
@@ -18,7 +19,7 @@ router.post("/signup", async (req, res, next) => {              // AQUI ESTAMOS 
     }
 
     try{
-        const foundUser = await UserModel.findOne({email})     //FALTA PONER USERNAME TAMBIEN
+        const foundUser = await UserModel.findOne({$or: [{email}, {username}]})                         // ? COMPROVAR QUE VA BIEN EL OR
         if(foundUser) {
             res.status(400).json({errorMessage: "El usuario ya existe!"})
             return;
@@ -39,8 +40,6 @@ router.post("/signup", async (req, res, next) => {              // AQUI ESTAMOS 
     }
 
 })
-
-
 
 
 router.post("/login", async (req, res, next) => {
@@ -66,7 +65,7 @@ router.post("/login", async (req, res, next) => {
 
             const payload = {
                 _id: foundUser._id,
-                email: foundUser.email,        //PREGUNTAR A JORGE SI TIENE QUE SER SIEMPRE ASI?
+                email: foundUser.email,             
                 name: foundUser.username
             }
 
@@ -90,9 +89,14 @@ router.post("/login", async (req, res, next) => {
 })
 
 
+router.get("/verify", isAuthenticated, (req, res, next) => {
+        res.status(200).json()
+
+    })
 
 
-// AQUI IRA LA RUTA DE VERIFY !!
+
+
 
 
 

@@ -12,7 +12,8 @@ const licenseSchema = new Schema(
       song:{
         type: Schema.Types.ObjectId,
         ref:"Song"
-    }
+    },
+      urlSong: String
       
     },
     {

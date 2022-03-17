@@ -7,6 +7,8 @@ router.get("/", async(req, res, next) => {                       // RENDERIZAMOS
     try{
         const response = await SongModel.find()
         .limit(20)
+        .populate("owner")
+        .select("username", "imgProfile", "bio")        //no pasar mail ni passwords   COMPROBAR!!!!
         res.json(response)
 
     }catch(err){
@@ -14,9 +16,9 @@ router.get("/", async(req, res, next) => {                       // RENDERIZAMOS
     }
 })
 
-router.post("/", async (req, res, next) => {                   // CREAMOS LA CANCION *REPASAR*
+router.post("/", async (req, res, next) => {                         // CREAMOS LA CANCION *REPASAR*
 
-    const { title, imgSong, price, audioUrl } = req.body
+    const { title, imgSong, price, audioUrl} = req.body
 
     try{
 
@@ -24,7 +26,8 @@ router.post("/", async (req, res, next) => {                   // CREAMOS LA CAN
             title, 
             imgSong, 
             price, 
-            audioUrl
+            audioUrl,
+            owner: req.payload._id
         })
         res.json(response)
 

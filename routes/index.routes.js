@@ -18,7 +18,7 @@ router.use("/song", songRoutes)
 
 
 const licenseRoutes = require("./license.routes")
-router.use("/transaction", licenseRoutes)
+router.use("/license", licenseRoutes)
 
 
 

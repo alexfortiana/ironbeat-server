@@ -48,7 +48,7 @@ router.get("/:id", async (req, res, next) => {        // PERFIL DE OTROS USUARIO
 
         const { id } = req.params
     try{
-        const response = await UserModel.findById(id)
+        const response = await UserModel.findById(id).select("username", "imgProfile", "bio")  //no pasar mail ni password   COMPROBAR!!!!
         res.json(response)
 
     }catch(err){
