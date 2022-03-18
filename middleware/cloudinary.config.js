@@ -21,8 +21,8 @@ const musicStorage = new CloudinaryStorage({
   cloudinary,
   params: {
     allowed_formats: ["mp3", "wav"],
-    folder: "music-gallery" // The name of the folder in cloudinary
-    // resource_type: "raw", // => this is in case you want to upload other types of files, not just images
+    folder: "music-gallery", // The name of the folder in cloudinary
+     resource_type: "video" // => this is in case you want to upload other types of files, not just images
   }
 });
 

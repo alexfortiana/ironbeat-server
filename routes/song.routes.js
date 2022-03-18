@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const SongModel = require("../models/Song.model")
+const isAuthenticated = require("../middleware/isAuthenticated");
 
 
 router.get("/", async(req, res, next) => {                       // RENDERIZAMOS TODAS LAS CANCIONES (20)
@@ -17,7 +18,7 @@ router.get("/", async(req, res, next) => {                       // RENDERIZAMOS
     }
 })
 
-router.post("/", async (req, res, next) => {                         // CREAMOS LA CANCION *REPASAR*
+router.post("/", isAuthenticated, async (req, res, next) => {                         // CREAMOS LA CANCION *REPASAR*
 
     const { title, imgSong, price, audioUrl} = req.body
 
@@ -37,7 +38,7 @@ router.post("/", async (req, res, next) => {                         // CREAMOS 
     }
 })
 
-router.get("/:id", async (req, res, next) => {                      // RENDERIZAMOS LA CANCION ESPECIFICA
+router.get("/:id/details", async (req, res, next) => {                      // RENDERIZAMOS LA CANCION ESPECIFICA
 
     const { id } = req.params
 
