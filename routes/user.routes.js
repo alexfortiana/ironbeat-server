@@ -2,7 +2,12 @@ const router = require("express").Router();
 const UserModel = require("../models/User.model");
 const isAuthenticated = require("../middleware/isAuthenticated");
 
-router.get("/",isAuthenticated, async (req, res, next) => {              // PERFIL DEL USUARIO
+//const fileUploader = require("../config/cloudinary.config");
+const { imageUploader } = require("../middleware/cloudinary.config")
+
+
+
+router.get("/", isAuthenticated, async (req, res, next) => {              // PERFIL DEL USUARIO
 
     const id  = req.payload._id
     console.log("aqui estoy", req.payload)
@@ -18,27 +23,34 @@ router.get("/",isAuthenticated, async (req, res, next) => {              // PERF
     }
 })
 
-router.patch("/", async (req, res, next) => {         // EDITAR EL PERFIL DEL USUARIO
+router.patch("/",imageUploader.single("image"), isAuthenticated, async (req, res, next) => {         // EDITAR EL PERFIL DEL USUARIO
     
     const id  = req.payload._id
     const { username, imgProfile, bio } = req.body
 
 
     try{
-
-        await UserModel.findByIdAndUpdate(id, { username, imgProfile, bio })
+       
+            await UserModel.findByIdAndUpdate(id, { 
+                username,
+                imgProfile,
+                bio })
+                
         res.json("Perfil actualizado")
+        
+
+        
 
     }catch(err){
         next(err)
     }
 })
 
-router.delete("/", async (req, res, next) => {       // ELIMINAR PERFIL
+router.delete("/", isAuthenticated, async (req, res, next) => {       // ELIMINAR PERFIL
     const id  = req.payload._id
 
     try{
-        await UserModel.findbyIdAndDelete(id)
+        await UserModel.findByIdAndDelete(id)
         res.json("Elemento eliminado")
 
     }catch(err){
@@ -50,7 +62,7 @@ router.get("/:id", async (req, res, next) => {        // PERFIL DE OTROS USUARIO
 
         const { id } = req.params
     try{
-        const response = await UserModel.findById(id).select("username", "imgProfile", "bio")  //no pasar mail ni password   COMPROBAR!!!!
+        const response = await UserModel.findById(id).select("username").select("bio").select("imgProfile")  //no pasar mail ni password   COMPROBAR!!!!
         res.json(response)
 
     }catch(err){
