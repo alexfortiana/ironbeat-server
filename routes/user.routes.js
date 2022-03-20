@@ -10,7 +10,6 @@ const { imageUploader } = require("../middleware/cloudinary.config")
 router.get("/", isAuthenticated, async (req, res, next) => {              // PERFIL DEL USUARIO
 
     const id  = req.payload._id
-    console.log("aqui estoy", req.payload)
     
 
     try{
@@ -58,6 +57,23 @@ router.delete("/", isAuthenticated, async (req, res, next) => {       // ELIMINA
     }
 })
 
+router.get("/followers", isAuthenticated, async (req, res, next) => {
+
+       
+    try{
+         const response = await UserModel.findById(req.payload._id).select("follows")
+
+    
+    
+         
+        res.json(response)
+    } catch(err) {
+        next(err)
+    }
+       
+    })
+
+
 router.get("/:id/followers",isAuthenticated, async (req, res, next) => {
     const {id} = req.params
     const myId = req.payload._id
@@ -85,12 +101,18 @@ router.get("/:id/followers",isAuthenticated, async (req, res, next) => {
     
 })
 
+
+
 router.get("/:id", async (req, res, next) => {        // PERFIL DE OTROS USUARIOS
 
         const { id } = req.params
     try{
-        const response = await UserModel.findById(id).select("username").select("bio").select("imgProfile")  //no pasar mail ni password   COMPROBAR!!!!
-        res.json(response)
+        
+          const response = await UserModel.findById(id).select("username").select("bio").select("imgProfile")
+            // const myId = await UserModel.findById(req.payload._id).select("username")
+        res.json(response)  
+        
+        
 
     }catch(err){
         next(err)
