@@ -8,9 +8,9 @@ router.get("/", async(req, res, next) => {                       // RENDERIZAMOS
 
     try{
         const response = await SongModel.find()
-        .limit(20)
-        .populate("owner")
-        .select("username", "imgProfile", "bio")        //no pasar mail ni passwords   COMPROBAR!!!!
+        // .limit(20)
+        // .populate("owner")
+        // .select("username", "imgProfile", "bio")        //no pasar mail ni passwords   COMPROBAR!!!!
         res.json(response)
 
     }catch(err){
