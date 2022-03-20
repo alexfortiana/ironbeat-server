@@ -7,10 +7,10 @@ router.get("/", async(req, res, next) => {                       // RENDERIZAMOS
 
 
     try{
-        const response = await SongModel.find()
+        const response = await SongModel.find()        
         // .limit(20)
         // .populate("owner")
-        // .select("username", "imgProfile", "bio")        //no pasar mail ni passwords   COMPROBAR!!!!
+        // .select("username", "imgProfile", "bio")        //no pasar mail ni passwords   COMPROBAR!!!!  ORDENAR .sort({ createdAt: -1 })
         res.json(response)
 
     }catch(err){
@@ -60,6 +60,18 @@ router.delete("/:id", async(req, res, next) => {                // ELIMINAMOS LA
         res.json("Cancion eliminada")
 
     }catch(err){
+        next(err)
+    }
+})
+
+
+router.patch("/:id/plays", async(req, res, next) => {
+    const {id} = req.params
+    try{
+        await SongModel.findByIdAndUpdate(id, {plays: +1})   
+        res.json("reproduccion sumada")
+
+    }catch(err) {
         next(err)
     }
 })

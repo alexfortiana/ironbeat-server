@@ -8,12 +8,7 @@ const songSchema = new Schema(
       imgSong: String,
       price: Number,
       audioUrl: String,
-      like: [
-          {
-              type: Schema.Types.ObjectId,
-              ref:"User"
-          }
-      ],
+      plays: Number,
       owner: {
           type: Schema.Types.ObjectId,
           ref: "User"
