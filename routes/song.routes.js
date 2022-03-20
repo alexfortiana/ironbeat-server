@@ -7,10 +7,21 @@ router.get("/", async(req, res, next) => {                       // RENDERIZAMOS
 
 
     try{
-        const response = await SongModel.find()        
-        // .limit(20)
-        // .populate("owner")
-        // .select("username", "imgProfile", "bio")        //no pasar mail ni passwords   COMPROBAR!!!!  ORDENAR .sort({ createdAt: -1 })
+        const response = await SongModel.find().populate({ 
+            path: "owner",
+            select: "username"
+        }).exec();
+
+        console.log("heeeee", response)
+
+
+
+      
+
+
+        
+        
+              //no pasar mail ni passwords   COMPROBAR!!!!  ORDENAR .sort({ createdAt: -1 })
         res.json(response)
 
     }catch(err){

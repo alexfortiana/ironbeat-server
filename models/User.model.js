@@ -11,6 +11,12 @@ const userSchema = new Schema(
     imgProfile: String,
     bio: String,
     password: String,
+    follows : [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

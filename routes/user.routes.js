@@ -58,6 +58,33 @@ router.delete("/", isAuthenticated, async (req, res, next) => {       // ELIMINA
     }
 })
 
+router.get("/:id/followers",isAuthenticated, async (req, res, next) => {
+    const {id} = req.params
+    const myId = req.payload._id
+    
+    
+
+    try{
+        const userToFollow = await UserModel.findById(id)
+        const myUser = await UserModel.findById(myId)
+
+        if(!myUser.follows.includes(id)){
+            await UserModel.findByIdAndUpdate(myId, { 
+                $push: { follows: id }
+             })
+        }else {
+            await UserModel.findByIdAndUpdate(myId, {
+                $pull: { follows: id }
+            })
+        }
+
+    }catch(err){
+        next(err)
+    }
+    
+    
+})
+
 router.get("/:id", async (req, res, next) => {        // PERFIL DE OTROS USUARIOS
 
         const { id } = req.params
@@ -69,6 +96,8 @@ router.get("/:id", async (req, res, next) => {        // PERFIL DE OTROS USUARIO
         next(err)
     }
 })
+
+
 
 //  SI EN ALGUN MOMENTO QUEREMOS UN ADMIN, HACERLO QUE PUEDA ELIMINAR A LOS USUARIOS 
 
