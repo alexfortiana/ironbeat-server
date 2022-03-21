@@ -23,5 +23,8 @@ router.use("/license", licenseRoutes)
 const uploaderRoutes = require("./uploader.routes")
 router.use("/upload", uploaderRoutes)
 
+const playlistRoutes = require("./playlist.routes")
+router.use("/playlist", playlistRoutes)
+
 
 module.exports = router;

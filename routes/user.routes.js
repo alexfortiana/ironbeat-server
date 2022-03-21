@@ -4,6 +4,8 @@ const isAuthenticated = require("../middleware/isAuthenticated");
 
 //const fileUploader = require("../config/cloudinary.config");
 const { imageUploader } = require("../middleware/cloudinary.config")
+const SongModel = require("../models/Song.model");
+const { json } = require("express/lib/response");
 
 
 
@@ -62,7 +64,7 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
        
     try{
          const response = await UserModel.findById(req.payload._id).populate("follows")
-         console.log(response.follows)
+        //  console.log(response.follows)
 
     
     
@@ -73,6 +75,56 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
     }
        
     })
+
+//AÑADIR EN EL CARRITO y BORRAR DEL CARRITO
+
+    router.patch("/:id/cart", isAuthenticated, async(req, res ,next) => {
+        const {id} = req.params
+    const myId = req.payload._id
+
+    try{
+        const myUser = await UserModel.findById(myId)
+        if(!myUser.shoppingList.includes(id)){
+          await UserModel.findByIdAndUpdate(myId, {
+           $push: {shoppingList: id}
+        })  
+        } else {
+            await UserModel.findByIdAndUpdate(myId, {
+                $pull: {shoppingList: id}})
+
+        }
+        
+        res.json("actualizado")
+
+
+
+        
+
+    }catch(err){
+        next(err)
+    }
+
+    })
+
+
+    //RENDERIZAR CARRITO LIST
+
+    router.get("/my-cart", isAuthenticated, async (req, res, next) => {
+        try{
+            const response = await UserModel.findById(req.payload._id).populate("Song")
+            res.json(response)
+
+        }catch(err){
+            next(err)
+        }
+    })
+
+
+
+
+
+
+
 
 
 router.patch("/:id/followers",isAuthenticated, async (req, res, next) => {
@@ -109,6 +161,7 @@ router.get("/:id", async (req, res, next) => {        // PERFIL DE OTROS USUARIO
         const { id } = req.params
     try{
             const response = await UserModel.findById(id).select("username").select("bio").select("imgProfile")
+            
             res.json(response) 
 
         
