@@ -61,12 +61,13 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
 
        
     try{
-         const response = await UserModel.findById(req.payload._id).select("follows")
+         const response = await UserModel.findById(req.payload._id).populate("follows")
+         console.log(response.follows)
 
     
     
          
-        res.json(response)
+        res.json(response.follows)
     } catch(err) {
         next(err)
     }
@@ -74,7 +75,7 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
     })
 
 
-router.get("/:id/followers",isAuthenticated, async (req, res, next) => {
+router.patch("/:id/followers",isAuthenticated, async (req, res, next) => {
     const {id} = req.params
     const myId = req.payload._id
     
@@ -107,11 +108,9 @@ router.get("/:id", async (req, res, next) => {        // PERFIL DE OTROS USUARIO
 
         const { id } = req.params
     try{
-        
-          const response = await UserModel.findById(id).select("username").select("bio").select("imgProfile")
-            // const myId = await UserModel.findById(req.payload._id).select("username")
-        res.json(response)  
-        
+            const response = await UserModel.findById(id).select("username").select("bio").select("imgProfile")
+            res.json(response) 
+
         
 
     }catch(err){
