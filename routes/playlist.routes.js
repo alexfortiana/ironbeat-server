@@ -44,19 +44,24 @@ router.patch("/:idSong/old/", isAuthenticated, async(req, res, next) => {
     const songId = req.params.idSong
     const myId = req.payload._id
     const {name} = req.body
+
+    console.log("ola")
     try{
+        
         const theList = await PlaylistModel.findOne({name})
-        if(!theList.list.includes(songId)){
+        // if(!theList.list.includes(songId)){
+            
           await PlaylistModel.findOneAndUpdate(theList._id, {
             $push:  {list: songId}
+          })
             
 
-        } )  
-        } else {
-            await PlaylistModel.findOneAndUpdate(theList._id, {
-        $pull: {list: songId}
-    })
-        }
+    //     } )  
+    //     } else {
+    //         await PlaylistModel.findOneAndUpdate(theList._id, {
+    //     $pull: {list: songId}
+    // })
+        // }
         
 
 res.json("actualizado")
