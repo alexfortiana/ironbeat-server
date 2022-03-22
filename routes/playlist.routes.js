@@ -40,20 +40,20 @@ router.get("/all", isAuthenticated, async(req, res, next) => {
 
 //AÑADIR CANCIONES A UNA LISTA VIEJA  PONER TAMBIEN PARA ELIMINAR!!
 
-router.patch("/:idSong/old/:idList", isAuthenticated, async(req, res, next) => {
+router.patch("/:idSong/old/", isAuthenticated, async(req, res, next) => {
     const songId = req.params.idSong
     const myId = req.payload._id
-    const listId = req.params.idList
+    const {name} = req.body
     try{
-        const theList = await PlaylistModel.findById(listId)
+        const theList = await PlaylistModel.findOne({name})
         if(!theList.list.includes(songId)){
-          await PlaylistModel.findOneAndUpdate(listId, {
+          await PlaylistModel.findOneAndUpdate(theList._id, {
             $push:  {list: songId}
             
 
         } )  
         } else {
-            await PlaylistModel.findOneAndUpdate(listId, {
+            await PlaylistModel.findOneAndUpdate(theList._id, {
         $pull: {list: songId}
     })
         }
