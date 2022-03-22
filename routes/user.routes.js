@@ -135,7 +135,7 @@ router.patch("/:id/followers",isAuthenticated, async (req, res, next) => {
     
 
     try{
-        const userToFollow = await UserModel.findById(id)
+        // const userToFollow = await UserModel.findById(id)
         const myUser = await UserModel.findById(myId)
 
         if(!myUser.follows.includes(id)){
@@ -147,6 +147,7 @@ router.patch("/:id/followers",isAuthenticated, async (req, res, next) => {
                 $pull: { follows: id }
             })
         }
+        res.json()
 
     }catch(err){
         next(err)

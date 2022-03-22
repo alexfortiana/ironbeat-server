@@ -43,15 +43,15 @@ router.get("/all", isAuthenticated, async(req, res, next) => {
 router.patch("/:idSong/old/", isAuthenticated, async(req, res, next) => {
     const songId = req.params.idSong
     const myId = req.payload._id
-    const {name} = req.body
+    const {playlistId} = req.body
+    console.log(req.body)
 
-    console.log("ola")
+    console.log(songId)
     try{
         
-        const theList = await PlaylistModel.findOne({name})
-        // if(!theList.list.includes(songId)){
+
             
-          await PlaylistModel.findOneAndUpdate(theList._id, {
+          await PlaylistModel.findByIdAndUpdate(playlistId, {
             $push:  {list: songId}
           })
             
