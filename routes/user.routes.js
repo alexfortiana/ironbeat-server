@@ -111,7 +111,8 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
 
     router.get("/my-cart", isAuthenticated, async (req, res, next) => {
         try{
-            const response = await UserModel.findById(req.payload._id).populate("Song")
+            const response = await UserModel.findById(req.payload._id).populate("shoppingList")
+            console.log(response)
             res.json(response)
 
         }catch(err){

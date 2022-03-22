@@ -12,7 +12,7 @@ router.get("/", async(req, res, next) => {                       // RENDERIZAMOS
             select: "username"
         }).exec();
 
-        console.log("heeeee", response)
+       
 
 
 
