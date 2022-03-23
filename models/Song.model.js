@@ -8,7 +8,10 @@ const songSchema = new Schema(
       imgSong: String,
       price: Number,
       audioUrl: String,
-      plays: Number,
+      plays: {
+        type: Number,
+        default: 0,
+      },
       owner: {
           type: Schema.Types.ObjectId,
           ref: "User"

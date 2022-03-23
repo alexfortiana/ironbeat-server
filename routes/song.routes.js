@@ -66,10 +66,13 @@ router.delete("/:id", async(req, res, next) => {                // ELIMINAMOS LA
 })
 
 
-router.patch("/:id/plays", async(req, res, next) => {
-    const {id} = req.params
+router.patch("/plays", async(req, res, next) => {
+    const {id} = req.body
+    
     try{
-        await SongModel.findByIdAndUpdate(id, {plays: +1})   
+        console.log("estoy añadiendo")
+        const response = await SongModel.findByIdAndUpdate({_id: id},{$inc: {plays: 1}} ) 
+        console.log("he", response)
         res.json("reproduccion sumada")
 
     }catch(err) {
