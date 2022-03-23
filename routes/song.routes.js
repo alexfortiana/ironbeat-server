@@ -11,17 +11,7 @@ router.get("/", async(req, res, next) => {                       // RENDERIZAMOS
             path: "owner",
             select: "username"
         }).exec();
-
-       
-
-
-
-      
-
-
-        
-        
-              //no pasar mail ni passwords   COMPROBAR!!!!  ORDENAR .sort({ createdAt: -1 })
+        //no pasar mail ni passwords   COMPROBAR!!!!  ORDENAR .sort({ createdAt: -1 })
         res.json(response)
 
     }catch(err){

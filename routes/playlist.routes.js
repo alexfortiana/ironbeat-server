@@ -35,7 +35,18 @@ router.get("/all", isAuthenticated, async(req, res, next) => {
         next(err)
     }
 })
+ router.get("/:id/playlist", async (req, res, next) => {
 
+        const {id} = req.params;
+    try{
+
+        const response = await PlaylistModel.findById(id).populate("list")
+        console.log("back", response)
+        res.json(response)
+    }catch(err){
+        next(err)
+    }
+}) 
 
 
 //AÑADIR CANCIONES A UNA LISTA VIEJA  PONER TAMBIEN PARA ELIMINAR!!
@@ -44,9 +55,7 @@ router.patch("/:idSong/old/", isAuthenticated, async(req, res, next) => {
     const songId = req.params.idSong
     const myId = req.payload._id
     const {playlistId} = req.body
-    console.log(req.body)
 
-    console.log(songId)
     try{
         
 
@@ -70,9 +79,15 @@ res.json("actualizado")
     }
 })
 
+
+
+
+
+
+
 //QUITAR LISTA HACER CONDICIONAL DE SI ES MIA LA LISTA
 
-router.delete("/:id/", isAuthenticated, async (res, req, next) => {
+/* router.delete("/:id/", isAuthenticated, async (res, req, next) => {
     const {id} = req.params
     try{
     
@@ -83,7 +98,7 @@ router.delete("/:id/", isAuthenticated, async (res, req, next) => {
     }
     
 
-})
+}) */
 
 
 
