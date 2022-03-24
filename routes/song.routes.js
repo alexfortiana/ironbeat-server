@@ -3,15 +3,23 @@ const SongModel = require("../models/Song.model")
 const isAuthenticated = require("../middleware/isAuthenticated");
 
 
-router.get("/", async(req, res, next) => {                       // RENDERIZAMOS TODAS LAS CANCIONES (20)
+router.get("/all-music/:page", async(req, res, next) => {                       // RENDERIZAMOS TODAS LAS CANCIONES (20)
 
+    const { page  } = req.params
+
+    // 1 => start 0. Limit 20
+    const songsToSkip = page * 20
 
     try{
-        const response = await SongModel.find().populate({ 
+        const response = await SongModel.find()
+        .skip(songsToSkip)
+        .limit(20)
+        .populate({ 
             path: "owner",
             select: "username"
         }).exec();
         //no pasar mail ni passwords   COMPROBAR!!!!  ORDENAR .sort({ createdAt: -1 })
+            console.log("getting songs", response.length)
         res.json(response)
 
     }catch(err){
