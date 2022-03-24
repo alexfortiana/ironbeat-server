@@ -81,7 +81,7 @@ router.patch("/plays", async(req, res, next) => {
     try{
         console.log("estoy añadiendo")
         const response = await SongModel.findByIdAndUpdate({_id: id},{$inc: {plays: 1}} ) 
-        console.log("he", response)
+
         res.json("reproduccion sumada")
 
     }catch(err) {
@@ -92,10 +92,13 @@ router.patch("/plays", async(req, res, next) => {
 
 router.get("/my-songs", isAuthenticated, async (req, res, next) => {
     const {_id} = req.payload
+   
 
     try{
-        const response = SongModel.find({owner: _id})
+        const response = await SongModel.find({owner: _id})
+        
         res.json(response)
+
 
     }catch(err){
         next(err)
@@ -106,7 +109,7 @@ router.get("/:id/songs-list", async (req, res, next) => {
     const {id} = req.params
 
     try{
-        const response = SongModel.find({owner: id})
+        const response = await SongModel.find({owner: id})
         res.json(response)
     }catch(err){
         next(err)
@@ -116,7 +119,7 @@ router.get("/:id/songs-list", async (req, res, next) => {
 router.get("/ranking-plays", async (req, res, next) => {
 
     try{
-        const response = SongModel.find()
+        const response = await SongModel.find()
         .sort({plays: 1})
         .skip(5)
 
