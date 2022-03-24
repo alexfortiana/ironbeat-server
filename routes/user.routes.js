@@ -76,21 +76,21 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
        
     })
 
-//AÑADIR EN EL CARRITO y BORRAR DEL CARRITO
+//AÑADIR EN EL array y BORRAR DEL favoritos
 
-    router.patch("/:id/cart", isAuthenticated, async(req, res ,next) => {
+    router.patch("/:id/favorites", isAuthenticated, async(req, res ,next) => {
         const {id} = req.params
     const myId = req.payload._id
 
     try{
         const myUser = await UserModel.findById(myId)
-        if(!myUser.shoppingList.includes(id)){
+        if(!myUser.favorites.includes(id)){
           await UserModel.findByIdAndUpdate(myId, {
-           $push: {shoppingList: id}
+           $push: {favorites: id}
         })  
         } else {
             await UserModel.findByIdAndUpdate(myId, {
-                $pull: {shoppingList: id}})
+                $pull: {favorites: id}})
 
         }
         
@@ -107,13 +107,23 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
     })
 
 
-    //RENDERIZAR CARRITO LIST
+    //RENDERIZAR favoritos LIST
 
-    router.get("/my-cart", isAuthenticated, async (req, res, next) => {
+    router.get("/favorites", isAuthenticated, async (req, res, next) => {
         try{
-            const response = await UserModel.findById(req.payload._id).populate("shoppingList")
+            const response = await UserModel.findById(req.payload._id).populate("favorites")
             console.log(response)
             res.json(response)
+
+        }catch(err){
+            next(err)
+        }
+    })
+
+    router.get("/:id/favorites", async (req, res, next) => {
+        const {id} = req.params
+        try{
+            const response = UserModel.findById(id).populate("favorites")
 
         }catch(err){
             next(err)

@@ -88,4 +88,47 @@ router.patch("/plays", async(req, res, next) => {
     }
 })
 
+
+router.get("/my-songs", isAuthenticated, async (req, res, next) => {
+    const {_id} = req.payload
+
+    try{
+        const response = SongModel.find({owner: _id})
+        res.json(response)
+
+    }catch(err){
+        next(err)
+    }
+})
+
+router.get("/:id/songs-list", async (req, res, next) => {
+    const {id} = req.params
+
+    try{
+        const response = SongModel.find({owner: id})
+        res.json(response)
+    }catch(err){
+        next(err)
+    }
+})
+
+router.get("/ranking-plays", async (req, res, next) => {
+
+    try{
+        const response = SongModel.find()
+        .sort({plays: 1})
+        .skip(5)
+
+        res.json(response)
+
+    }catch(err){
+        next(err)
+    }
+})
+
+
+
+
+
+
 module.exports = router;

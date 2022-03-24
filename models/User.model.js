@@ -17,7 +17,7 @@ const userSchema = new Schema(
         ref: "User"
       }
     ],
-    shoppingList: [
+    favorites: [
       {
         type: Schema.Types.ObjectId,
         ref: "Song"
