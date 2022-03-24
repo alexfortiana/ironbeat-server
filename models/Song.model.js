@@ -5,7 +5,10 @@ const songSchema = new Schema(
       title: {
         type: String,
       },
-      imgSong: String,
+      imgSong:{
+        type: String,
+        default: "https://res.cloudinary.com/alexfurty/image/upload/v1648069475/photos-gallery/jq5j8ibdeqyzf6k0xzqk.png"
+      } ,
       price: Number,
       audioUrl: String,
       plays: {
