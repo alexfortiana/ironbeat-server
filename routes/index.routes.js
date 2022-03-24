@@ -26,5 +26,8 @@ router.use("/upload", uploaderRoutes)
 const playlistRoutes = require("./playlist.routes")
 router.use("/playlist", playlistRoutes)
 
+const searchRoutes = require("./search.routes")
+router.use("/search", searchRoutes)
+
 
 module.exports = router;

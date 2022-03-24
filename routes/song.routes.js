@@ -12,6 +12,7 @@ router.get("/all-music/:page", async(req, res, next) => {                       
 
     try{
         const response = await SongModel.find()
+        .sort({ createdAt: -1 })
         .skip(songsToSkip)
         .limit(20)
         .populate({ 
