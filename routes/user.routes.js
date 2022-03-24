@@ -111,8 +111,8 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
 
     router.get("/favorites", isAuthenticated, async (req, res, next) => {
         try{
-            const response = await UserModel.findById(req.payload._id).populate("favorites")
-            console.log(response)
+            const response = await UserModel.findById(req.payload._id).populate("favorites").populate({path:"favorites", populate: {path:"owner"}})
+            console.log("heyeyey", response)
             res.json(response)
 
         }catch(err){
