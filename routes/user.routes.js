@@ -123,7 +123,7 @@ router.get("/followers", isAuthenticated, async (req, res, next) => {
     router.get("/:id/favorites", async (req, res, next) => {
         const {id} = req.params
         try{
-            const response = UserModel.findById(id).populate("favorites")
+            const response = await UserModel.findById(id).populate("favorites")
 
         }catch(err){
             next(err)
