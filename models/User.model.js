@@ -5,27 +5,26 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      unique: true 
+      unique: true,
     },
     email: String,
     imgProfile: String,
     bio: String,
     password: String,
-    follows : [
+    follows: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User"
-      }
+        ref: "User",
+      },
     ],
     favorites: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Song"
-      }
-    ]
-
+        ref: "Song",
+      },
+    ],
   },
-    
+
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,

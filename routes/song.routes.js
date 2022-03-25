@@ -120,8 +120,8 @@ router.get("/ranking-plays", async (req, res, next) => {
 
     try{
         const response = await SongModel.find()
-        .sort({plays: 1})
-        .skip(5)
+        .sort({plays: -1})
+        .limit(5)
 
         res.json(response)
 
