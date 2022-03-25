@@ -56,23 +56,27 @@ router.patch("/:idSong/old/", isAuthenticated, async(req, res, next) => {
     const myId = req.payload._id
     const {playlistId} = req.body
 
-    try{
-        
-
-            
+    try{    
           await PlaylistModel.findByIdAndUpdate(playlistId, {
             $push:  {list: songId}
           })
-            
+res.json("actualizado")
+    }catch(err){
+        next(err)
+    }
+})
 
-    //     } )  
-    //     } else {
-    //         await PlaylistModel.findOneAndUpdate(theList._id, {
-    //     $pull: {list: songId}
-    // })
-        // }
-        
 
+
+router.patch("/:idSong/delete-list/", isAuthenticated, async(req, res, next) => {
+    const songId = req.params.idSong
+    const myId = req.payload._id
+    const {playlistId} = req.body
+
+    try{    
+          await PlaylistModel.findByIdAndUpdate(playlistId, {
+            $pull:  {list: songId}
+          })
 res.json("actualizado")
     }catch(err){
         next(err)
@@ -87,18 +91,19 @@ res.json("actualizado")
 
 //QUITAR LISTA HACER CONDICIONAL DE SI ES MIA LA LISTA
 
-/* router.delete("/:id/", isAuthenticated, async (res, req, next) => {
+router.delete("/:id/delete-list", isAuthenticated, async (req, res, next) => {
     const {id} = req.params
     try{
     
-        await PlaylistModel.findByIdAndDelete(id)
+        await PlaylistModel.findByIdAndDelete(id, {owner: req.payload._id})
+        res.json("Lista eliminada")
 
     }catch(err){
         next(err)
     }
     
 
-}) */
+})
 
 
 

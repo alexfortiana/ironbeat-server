@@ -132,6 +132,23 @@ router.get("/ranking-plays", async (req, res, next) => {
 
 
 
+router.delete("/:id/delete-song", isAuthenticated, async (req, res, next) => {
+    const {id} = req.params
+    console.log(req.params)
+    try{
+    
+        await SongModel.findByIdAndDelete(id, {owner: req.payload._id})
+        // const infoMessage = "cancion eliminada correctamente!"
+        res.json("Cancion eliminada")
+
+    }catch(err){
+        next(err)
+    }
+    
+
+})
+
+
 
 
 

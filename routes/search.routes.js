@@ -7,6 +7,8 @@ const UserModel = require("../models/User.model");
 router.get("/", async (req, res, next) => {
     let {searchReq} = req.query
 
+    console.log(req.query)
+
     try{
         const songSearch = await SongModel.find({
             title: searchReq.toLocaleUpperCase()
